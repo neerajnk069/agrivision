@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agrivision</title>
+  <!-- <link rel="shortcut icon" href="/assets/images/fav.png" /> -->
+
+
+  <link href="/assets/libs/select2/select2.min.css" rel="stylesheet" type="text/css" />
+
+  <!-- JSvectormap Css -->
+  <link href="/assets/libs/jsvectormap/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+  <!-- metisMenu Css -->
+  <link href="/assets/libs/metismenu/metisMenu.min.css" rel="stylesheet" type="text/css" />
+  <!-- metisMenu Css -->
+  <link href="/assets/libs/simplebar/simplebar.min.css" rel="stylesheet" type="text/css" />
+  <!-- Bootstrap Css -->
+  <link href="/assets/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <!-- Icons Css -->
+  <link href="/assets/css/icons.css" rel="stylesheet" type="text/css" />
+  <!-- App Css-->
+  <link href="/assets/css/app.css" id="app-style" rel="stylesheet" type="text/css" />
+  <!-- <link rel="shortcut icon" href="/assets/images/crewed1.png" /> -->
+
+  <!-- Bootstrap Css -->
+  <link href="/assets/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <!-- Icons Css -->
+  <link href="/assets/css/icons.css" rel="stylesheet" type="text/css" />
+  <!-- App Css-->
+  <link href="/assets/css/app.css" id="app-style" rel="stylesheet" type="text/css" />
+</head>
+<style>
+  .modal-backdrop~.modal-backdrop {
+    z-index: 1050 !important;
+  }
+
+  .modal-backdrop.show {
+    display: hidden !important;
+    background: #0000008f;
+  }
+
+  .layout-wrapper.sidebar-collapsed .main-content {
+    margin-left: 70px;
+    /* match collapsed width */
+  }
+
+  .vertical-menu.collapsed {
+    transition: width 0.3s;
+  }
+
+  .vertical-menu.hovered {
+    width: 240px;
+    /* expanded width on hover */
+  }
+
+  .layout-wrapper {
+    display: flex;
+  }
+
+  .layout-wrapper .main-content {
+    flex-grow: 1;
+    transition: margin-left 0.3s;
+  }
+
+  .layout-wrapper.sidebar-collapsed .main-content {
+    margin-left: 60px;
+  }
+
+  .vertical-menu .sub-menu {
+    display: none;
+  }
+
+  .vertical-menu.hovered .sub-menu {
+    display: block;
+  }
+
+  .layout-wrapper {
+    display: flex;
+    /* Sidebar + main content side by side */
+  }
+
+  .vertical-menu {
+    width: 250px;
+    /* expanded width */
+    transition: width 0.3s;
+  }
+
+  .main-content {
+    flex: 1;
+    /* take all remaining space */
+    transition: margin-left 0.3s;
+  }
+
+  .layout-wrapper.sidebar-collapsed .main-content {
+    margin-left: 70px;
+    /* match collapsed sidebar width */
+  }
+
+  .layout-wrapper .main-content {
+    margin-left: 250px;
+    /* match expanded sidebar width */
+  }
+
+  /* Smooth transition for navbar + dashboard */
+  .main-content,
+  .main-content .page-content {
+    transition: margin-left 0.3s ease;
+  }
+
+  /* Collapsed state */
+  .app.sidebar-collapsed .main-content,
+  .app.sidebar-collapsed .main-content .page-content {
+    margin-left: 80px;
+    /* collapsed sidebar width */
+  }
+
+  /* Expanded state */
+  .app.sidebar-expanded .main-content,
+  .app.sidebar-expanded .main-content .page-content {
+    margin-left: 250px;
+    /* expanded sidebar width */
+  }
+</style>
+
+<body className="sidebar-enable">
+  <div id="root"></div>
+
+   <script src="/assets/libs/jquery/jquery.min.js"></script>
+  <script src="/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="/src/main.<hash>.js"></script>
+
+ 
+
+  <script>
+    function checkSidebarEnable() {
+      const body = document.body;
+      const width = window.innerWidth;
+      
+      if (width > 1200) {
+        body.classList.add('sidebar-enable'); 
+      } else {
+        body.classList.remove('sidebar-enable'); 
+      }
+    }
+
+    checkSidebarEnable();
+
+    window.addEventListener('resize', checkSidebarEnable);
+
+    function initDashboardScripts() {
+      const mapContainer = document.getElementById('sales-by-locations');
+      if (!mapContainer) {
+        setTimeout(initDashboardScripts, 100);
+        return;
+      }
+
+      const scripts = [
+        '/assets/libs/metismenu/metisMenu.min.js',
+        '/assets/libs/simplebar/simplebar.min.js',
+        '/assets/libs/apexcharts/apexcharts.min.js',
+        '/assets/libs/jsvectormap/jsvectormap.min.js',
+        '/assets/libs/jsvectormap/us-merc-en.js',
+        '/assets/libs/select2/select2.min.js',
+        '/assets/js/pages/dashboard.init.js'
+      ];
+
+      function loadScript(src) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = src;
+          script.onload = resolve;
+          script.onerror = reject;
+          document.body.appendChild(script);
+        });
+      }
+
+      async function loadAllScripts() {
+        for (const src of scripts) {
+          await loadScript(src);
+        }
+      }
+
+      loadAllScripts();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDashboardScripts);
+    } else {
+      initDashboardScripts();
+    }
+
+    $(document).ready(function () {
+      $("#togglePassword").on("click", function () {
+        const passwordInput = $("#password");
+        const icon = $(this);
+        const type = passwordInput.attr("type") === "password" ? "text" : "password";
+        passwordInput.attr("type", type);
+
+        if (type === "text") {
+          icon.removeClass("ri-eye-off-line").addClass("ri-eye-line");
+        } else {
+          icon.removeClass("ri-eye-line").addClass("ri-eye-off-line");
+        }
+      });
+    });
+  </script>
+
+  <!-- App js -->
+  <script src="/assets/js/app.js"></script>
+
+</body>
+
+</html>
