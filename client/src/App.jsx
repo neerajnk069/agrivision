@@ -30,14 +30,12 @@ import ViewFaq from "./Admin/Faqs/ViewFaq";
 import NewsList from "./Admin/News/NewsList";
 import AddNews from "./Admin/News/AddNews";
 import EditNews from "./Admin/News/EditNews";
-import ViewNews from "./Admin/News/ViewNews";
+// import ViewNews from "./Admin/News/ViewNews";
 import ServiceList from "./Admin/Services/ServiceList";
 import AddService from "./Admin/Services/AddService";
 import EditService from "./Admin/Services/EditService";
 import ViewService from "./Admin/Services/ViewService";
 import AgricultureList from "./Admin/AgricultureListings/AgricultureList";
-// import AddAgriculture from "./Admin/AgricultureListings/AddAgriculture";
-// import EditAgriculture from "./Admin/AgricultureListings/EditAgriculture";
 import ViewAgriculture from "./Admin/AgricultureListings/ViewAgriculture";
 import AgricultureImagesList from "./Admin/AgricultureImagesListings/AgricultureImagesList";
 import ViewAgricultureImages from "./Admin/AgricultureImagesListings/ViewAgricultureImages";
@@ -73,16 +71,6 @@ const App = () => {
         <Router>
           <Routes>
             <Route path="/login" element={<Login />} />
-            {/* <Route
-              path="/"
-              element={
-                isAuthenticated ? (
-                  <Navigate to="/dashboard" replace />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            /> */}
             <Route element={<Layout />}>
               <Route
                 path="/dashboard"
@@ -117,10 +105,10 @@ const App = () => {
                 path="/editNews/:id"
                 element={<PrivateRoute element={<EditNews />} />}
               />
-              <Route
+              {/* <Route
                 path="/viewNews/:id"
                 element={<PrivateRoute element={<ViewNews />} />}
-              />
+              /> */}
 
               <Route
                 path="/serviceList"
@@ -152,14 +140,6 @@ const App = () => {
                 path="/agricultureList"
                 element={<PrivateRoute element={<AgricultureList />} />}
               />
-              {/* <Route
-                path="/addAgriculture"
-                element={<PrivateRoute element={<AddAgriculture />} />}
-              /> */}
-              {/* <Route
-                path="/editAgriculture/:id"
-                element={<PrivateRoute element={<EditAgriculture />} />}
-              /> */}
               <Route
                 path="/viewAgriculture/:id"
                 element={<PrivateRoute element={<ViewAgriculture />} />}

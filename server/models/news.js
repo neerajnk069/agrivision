@@ -23,9 +23,9 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: true,
       },
       status: {
-        type: DataTypes.ENUM(0, 1),
+        type: DataTypes.ENUM("0", "1"),
         allowNull: false,
-        defaultValue: 1,
+        defaultValue: "1",
         comment: "0=>incative,1=>active",
       },
     },
@@ -34,19 +34,19 @@ module.exports = function (sequelize, DataTypes) {
       tableName: "news",
       timestamps: true,
       paranoid: true,
-      indexes: [
-        {
-          name: "PRIMARY",
-          unique: true,
-          using: "BTREE",
-          fields: [{ name: "id" }],
-        },
-        {
-          name: "created_by",
-          using: "BTREE",
-          fields: [{ name: "created_by" }],
-        },
-      ],
+      // indexes: [
+      //   {
+      //     name: "PRIMARY",
+      //     unique: true,
+      //     using: "BTREE",
+      //     fields: [{ name: "id" }],
+      //   },
+      //   // {
+      //   //   name: "created_by",
+      //   //   using: "BTREE",
+      //   //   fields: [{ name: "created_by" }],
+      //   // },
+      // ],
     },
   );
 };

@@ -97,6 +97,7 @@ module.exports = {
 
       return helper.success(res, "All FAQs fetched", faqs);
     } catch (error) {
+      console.log(error);
       console.error("getFaqs Error:", error);
       return helper.error(res, "Server Error");
     }

@@ -7,6 +7,7 @@ const FaqList = () => {
   const navigate = useNavigate();
 
   const [faqs, setFaqs] = useState([]);
+  const [selectedFaq, setSelectedFaq] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -128,9 +129,9 @@ const FaqList = () => {
                                 <td className="text-end">
                                   <button
                                     className="btn btn-soft-primary btn-sm me-1"
-                                    onClick={() =>
-                                      navigate(`/viewFaq/${faq.id}`)
-                                    }
+                                    data-bs-toggle="offcanvas"
+                                    data-bs-target="#view-details"
+                                    onClick={() => setSelectedFaq(faq)}
                                   >
                                     <i className="ri-eye-fill"></i>
                                   </button>
@@ -171,6 +172,77 @@ const FaqList = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Offcanvas for News Details */}
+      <div
+        className="offcanvas offcanvas-end rdetails"
+        tabIndex="-1"
+        id="view-details"
+        aria-labelledby="offcanvasRightLabel"
+      >
+        <div className="offcanvas-header d-block">
+          <div className="d-flex align-items-center justify-content-between">
+            <h5 className="offcanvas-title mb-0 fw-semibold">Faq Details</h5>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+        <div className="offcanvas-body">
+          {selectedFaq ? (
+            <>
+              <div className="mt-3">
+                <div className="font-size-16 fw-medium mb-2">Question:</div>
+                <div className="bg-light">
+                  {selectedFaq.question ? (
+                    <textarea
+                      readOnly
+                      className="form-control"
+                      rows="10"
+                      value={selectedFaq.question}
+                      style={{
+                        resize: "none",
+                        backgroundColor: "#f8f9fa",
+                        border: "1px solid black",
+                      }}
+                    />
+                  ) : (
+                    "No question available"
+                  )}
+                </div>
+              </div>
+              <div className="mt-3">
+                <div className="font-size-16 fw-medium mb-2">Answer:</div>
+                <div className="bg-light">
+                  {selectedFaq.answer ? (
+                    <textarea
+                      readOnly
+                      className="form-control"
+                      rows="10"
+                      value={selectedFaq.answer}
+                      style={{
+                        resize: "none",
+                        backgroundColor: "#f8f9fa",
+                        border: "1px solid black",
+                      }}
+                    />
+                  ) : (
+                    "No answer available"
+                  )}
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-5">
+              <i className="ri-user-line font-size-48 text-muted"></i>
+              <p className="mt-3 text-muted">No faq selected</p>
+            </div>
+          )}
         </div>
       </div>
     </>

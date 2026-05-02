@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { axiosInstance, BASE_URL } from "../../Config";
+import { axiosInstance } from "../../Config";
 import { toast } from "react-toastify";
 import "@fancyapps/fancybox/dist/jquery.fancybox.css";
 import "@fancyapps/fancybox";

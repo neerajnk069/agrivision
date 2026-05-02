@@ -140,7 +140,7 @@ const Dashboard = () => {
                         </div>
                       </div>
 
-                      {/* Providers Card */}
+                      {/* Agents Card */}
                       <div className="col">
                         <div className="card bg-soft-blue">
                           <div

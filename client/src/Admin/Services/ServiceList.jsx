@@ -11,6 +11,7 @@ import "@fancyapps/fancybox";
 const ServiceList = () => {
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -105,110 +106,108 @@ const ServiceList = () => {
   };
 
   return (
-    <div id="layout-wrapper">
-      <div className="main-content">
-        <div className="page-content">
-          <div className="container-fluid">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h4>Services List</h4>
-              {/* <Link to="/addService" className="btn btn-primary btn-sm">
-                Add Service
-              </Link> */}
-            </div>
+    <>
+      <div id="layout-wrapper">
+        <div className="main-content">
+          <div className="page-content">
+            <div className="container-fluid">
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h4>Services List</h4>
+              </div>
 
-            <div className="card">
-              <div className="card-body">
-                <input
-                  type="text"
-                  className="form-control mb-3"
-                  placeholder="Search services..."
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
+              <div className="card">
+                <div className="card-body">
+                  <input
+                    type="text"
+                    className="form-control mb-3"
+                    placeholder="Search services..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
 
-                <div className="table-responsive">
-                  <table className="table table-bordered align-middle">
-                    <thead>
-                      <tr>
-                        <th>Sr.No</th>
-                        <th>Image</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th className="text-end">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {loading ? (
+                  <div className="table-responsive">
+                    <table className="table table-bordered align-middle">
+                      <thead>
                         <tr>
-                          <td colSpan="6" className="text-center">
-                            Loading...
-                          </td>
+                          <th>Sr.No</th>
+                          <th>Image</th>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>Status</th>
+                          <th className="text-end">Action</th>
                         </tr>
-                      ) : services.length === 0 ? (
-                        <tr>
-                          <td colSpan="6" className="text-center">
-                            No services Found
-                          </td>
-                        </tr>
-                      ) : (
-                        services.map((item, index) => (
-                          <tr key={item.id}>
-                            <td>{(currentPage - 1) * limit + index + 1}</td>
+                      </thead>
+                      <tbody>
+                        {loading ? (
+                          <tr>
+                            <td colSpan="6" className="text-center">
+                              Loading...
+                            </td>
+                          </tr>
+                        ) : services.length === 0 ? (
+                          <tr>
+                            <td colSpan="6" className="text-center">
+                              No services Found
+                            </td>
+                          </tr>
+                        ) : (
+                          services.map((item, index) => (
+                            <tr key={item.id}>
+                              <td>{(currentPage - 1) * limit + index + 1}</td>
 
-                            <td>
-                              {item.image ? (
-                                <a
-                                  href={`${BASE_URL}/${item.image}`}
-                                  data-fancybox="gallery"
-                                >
-                                  <img
-                                    src={`${BASE_URL}/${item.image}`}
-                                    alt="services"
-                                    style={{
-                                      width: "50px",
-                                      height: "50px",
-                                      borderRadius: "50%",
-                                      objectFit: "cover",
-                                      cursor: "pointer",
-                                    }}
+                              <td>
+                                {item.image ? (
+                                  <a
+                                    href={`${BASE_URL}/${item.image}`}
+                                    data-fancybox="gallery"
+                                  >
+                                    <img
+                                      src={`${BASE_URL}/${item.image}`}
+                                      alt="services"
+                                      style={{
+                                        width: "50px",
+                                        height: "50px",
+                                        borderRadius: "50%",
+                                        objectFit: "cover",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                  </a>
+                                ) : (
+                                  "No Image"
+                                )}
+                              </td>
+
+                              <td>{item.title}</td>
+
+                              <td style={{ maxWidth: "300px" }}>
+                                {truncateText(item.description, 15)}
+                              </td>
+
+                              <td>
+                                <div className="form-check form-switch">
+                                  <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    checked={item.status == "1"}
+                                    onChange={() =>
+                                      toggleStatus(item.id, item.status)
+                                    }
                                   />
-                                </a>
-                              ) : (
-                                "No Image"
-                              )}
-                            </td>
+                                </div>
+                              </td>
 
-                            <td>{item.title}</td>
+                              <td className="text-end">
+                                <button
+                                  className="btn btn-soft-primary btn-sm me-1"
+                                  data-bs-toggle="offcanvas"
+                                  data-bs-target="#view-details"
+                                  onClick={() => setSelectedServices(item)}
+                                >
+                                  <i className="ri-eye-fill font-size-16"></i>
+                                </button>
 
-                            <td style={{ maxWidth: "300px" }}>
-                              {truncateText(item.description, 15)}
-                            </td>
-
-                            <td>
-                              <div className="form-check form-switch">
-                                <input
-                                  className="form-check-input"
-                                  type="checkbox"
-                                  checked={item.status == "1"}
-                                  onChange={() =>
-                                    toggleStatus(item.id, item.status)
-                                  }
-                                />
-                              </div>
-                            </td>
-
-                            <td className="text-end">
-                              <button
-                                className="btn btn-soft-primary btn-sm me-1"
-                                onClick={() =>
-                                  navigate(`/viewService/${item.id}`)
-                                }
-                              >
-                                View
-                              </button>
-
-                              {/* <button
+                                {/* <button
                                 className="btn btn-warning btn-sm me-1"
                                 onClick={() =>
                                   navigate(`/editService/${item.id}`)
@@ -217,36 +216,148 @@ const ServiceList = () => {
                                 Edit
                               </button> */}
 
-                              <button
-                                className="btn btn-danger btn-sm"
-                                onClick={() => deleteService(item.id)}
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                                <button
+                                  className="btn btn-danger btn-sm"
+                                  onClick={() => deleteService(item.id)}
+                                >
+                                  <i className="ri-delete-bin-line font-size-16"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
 
-                {totalPages > 1 && (
-                  <Stack spacing={2} className="mt-3 d-flex align-items-center">
-                    <Pagination
-                      count={totalPages}
-                      page={currentPage}
-                      onChange={handlePageChange}
-                      color="primary"
-                    />
-                  </Stack>
-                )}
+                  {totalPages > 1 && (
+                    <Stack
+                      spacing={2}
+                      className="mt-3 d-flex align-items-center"
+                    >
+                      <Pagination
+                        count={totalPages}
+                        page={currentPage}
+                        onChange={handlePageChange}
+                        color="primary"
+                      />
+                    </Stack>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Offcanvas for Services Details */}
+      <div
+        className="offcanvas offcanvas-end rdetails"
+        tabIndex="-1"
+        id="view-details"
+        aria-labelledby="offcanvasRightLabel"
+      >
+        <div className="offcanvas-header d-block">
+          <div className="d-flex align-items-center justify-content-between">
+            <h5 className="offcanvas-title mb-0 fw-semibold">
+              Services Details
+            </h5>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+        <div className="offcanvas-body">
+          {selectedServices ? (
+            <>
+              <div className="scroll-room mb-3" id="scrollRoom">
+                <label className="text-muted small">Image</label>
+
+                {selectedServices.image ? (
+                  <a
+                    href={`${BASE_URL}/${selectedServices.image}`}
+                    data-fancybox="gallery"
+                    className="image-popup-gallery-item"
+                  >
+                    <img
+                      src={`${BASE_URL}/${selectedServices.image}`}
+                      className="img-fluid rounded"
+                      alt="Provider"
+                      style={{
+                        width: "100%",
+                        maxHeight: "300px",
+                        objectFit: "cover",
+                      }}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://via.placeholder.com/300x300";
+                      }}
+                    />
+                  </a>
+                ) : (
+                  <div
+                    className="bg-light rounded d-flex align-items-center justify-content-center"
+                    style={{ height: "200px" }}
+                  >
+                    <i className="ri-user-line font-size-48 text-muted"></i>
+                  </div>
+                )}
+              </div>
+
+              <div className="border-bottom mb-3 pb-3">
+                <label className="text-muted small">Title</label>
+                <h5 className="fw-semibold mb-2">
+                  {selectedServices.title || "No Title"}
+                </h5>
+              </div>
+
+              <div className="mt-3">
+                <div className="font-size-16 fw-medium mb-2">Description:</div>
+                <div className="bg-light">
+                  {selectedServices.description ? (
+                    <textarea
+                      readOnly
+                      className="form-control"
+                      rows="10"
+                      value={selectedServices.description}
+                      style={{
+                        resize: "none",
+                        backgroundColor: "#f8f9fa",
+                        border: "1px solid black",
+                      }}
+                    />
+                  ) : (
+                    "No description available"
+                  )}
+                </div>
+              </div>
+              <div className="mb-4">
+                <div className="row g-3">
+                  <div className="col-6">
+                    <label className="text-muted small">Status</label>
+                    <p>
+                      {selectedServices.status == "1" ? (
+                        <span className="text-success">Active</span>
+                      ) : (
+                        <span className="text-danger">Inactive</span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-5">
+              <i className="ri-user-line font-size-48 text-muted"></i>
+              <p className="mt-3 text-muted">No services selected</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

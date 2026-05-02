@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { axiosWebsite, URL_BASE } from "../../Config";
+import { axiosWebsite } from "../../Config";
 import { toast } from "react-toastify";
 
 const ListingDetails = () => {
@@ -12,7 +12,6 @@ const ListingDetails = () => {
   const fetchListing = async () => {
     try {
       const response = await axiosWebsite.get(`/agricultureImagesView/${id}`);
-      console.log(response, ">>>>>>>>>>>>>>>>>>>>");
 
       const data = response.data.body;
       setListing(data);
@@ -30,7 +29,7 @@ const ListingDetails = () => {
 
   useEffect(() => {
     fetchListing();
-  }, [id]);
+  }, [id, fetchListing]);
 
   if (!listing) {
     return (
@@ -48,7 +47,7 @@ const ListingDetails = () => {
 
       <div className="row">
         <div className="col-md-6">
-          {listing.agri_images?.map((img) => (
+          {/* {listing.agri_images?.map((img) => (
             <img
               // key={img.id}
               // src={`http://localhost:4888/admin/${img.image_url}`}
@@ -58,7 +57,15 @@ const ListingDetails = () => {
               className="img-fluid rounded shadow"
               style={{ width: "100%", height: "400px", objectFit: "cover" }}
             />
-          ))}
+          ))} */}
+          <div className="col-md-6">
+            <img
+              src={mainImage}
+              alt="Main"
+              className="img-fluid rounded shadow"
+              style={{ width: "100%", height: "400px", objectFit: "cover" }}
+            />
+          </div>
         </div>
         <div className="d-flex justify-content-center gap-2 flex-wrap">
           {listing.agri_images.map((img) => {
